@@ -1,5 +1,5 @@
 // controller.rs
-use crate::model::{TaskList, Task};
+use crate::model::TaskList;
 use crate::view;
 
 pub struct Controller {
@@ -15,6 +15,12 @@ impl Controller {
 
     pub fn add_task(&mut self, description: String) {
         self.task_list.add_task(description);
+    }
+
+    pub fn toggle_task(&mut self, index: usize) {
+        if let Some(task) = self.task_list.tasks.get_mut(index) {
+            task.completed = !task.completed;
+        }
     }
 
     pub fn show_tasks(&self) {

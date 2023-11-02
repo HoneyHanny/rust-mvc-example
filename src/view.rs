@@ -1,19 +1,19 @@
 // view.rs
-use cursive::views::{Dialog, ListView, TextView};
-use cursive::Cursive;
+use std::io;
+use crate::model::Task;
 
-pub fn show_tasks(cursive: &mut Cursive, tasks: &Vec<Task>) {
-    let task_list = ListView::new()
-        .with(|list| {
-            for task in tasks {
-                list.add_child("", TextView::new(task.description.clone()));
-            }
-        });
+pub fn show_tasks(tasks: &Vec<Task>) {
+    println!("To-Do List:");
+    for (index, task) in tasks.iter().enumerate() {
+        let status = if task.completed { " [X]" } else { " [ ]" };
+        println!("{}{} {}", index + 1, status, task.description);
+    }
+}
 
-    cursive.add_layer(
-        Dialog::new()
-            .title("To-Do List")
-            .content(task_list)
-            .button("Quit", |s| s.quit()),
-    );
+pub fn read_input() -> String {
+    let mut input = String::new();
+    io::stdin()
+        .read_line(&mut input)
+        .expect("Failed to read line");
+    input.trim().to_string()
 }

@@ -3,17 +3,43 @@ mod model;
 mod view;
 mod controller;
 
-use cursive::Cursive;
 use crate::controller::Controller;
 
 fn main() {
-    let mut cursive = Cursive::default();
     let mut controller = Controller::new();
 
-    controller.add_task("Buy groceries".to_string());
-    controller.add_task("Finish Rust project".to_string());
+    loop {
+        println!("1. Add Task");
+        println!("2. Toggle Task");
+        println!("3. Show Tasks");
+        println!("4. Quit");
 
-    controller.show_tasks(&mut cursive);
+        let choice = view::read_input();
 
-    cursive.run();
+        match choice.as_str() {
+            "1" => {
+                println!("Enter task description:");
+                let description = view::read_input();
+                controller.add_task(description);
+            }
+            "2" => {
+                controller.show_tasks();
+                println!("Enter the task number to toggle:");
+                if let Ok(index) = view::read_input().parse::<usize>() {
+                    controller.toggle_task(index - 1);
+                } else {
+                    println!("Invalid input. Please enter a valid task number.");
+                }
+            }
+            "3" => {
+                controller.show_tasks();
+            }
+            "4" => {
+                break;
+            }
+            _ => {
+                println!("Invalid choice. Please select a valid option.");
+            }
+        }
+    }
 }

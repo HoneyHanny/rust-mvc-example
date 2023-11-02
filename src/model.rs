@@ -5,12 +5,12 @@ pub struct Task {
 }
 
 pub struct TaskList {
-    tasks: Vec<Task>,
+    pub tasks: Vec<Task>,
 }
 
 impl TaskList {
     pub fn new() -> Self {
-        TaskList { tasks: vec![] }
+        TaskList { tasks: Vec::new() }
     }
 
     pub fn add_task(&mut self, description: String) {
